@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="1060" viewBox="0 0 1640 1060">
+<rect width="1640" height="1060" fill="#FFFFFF"/>
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#475569"/></marker>
+<marker id="arrL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#94A3B8"/></marker>
+</defs>
+<text x="820.0" y="52" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="30" fill="#0F172A" text-anchor="middle" font-weight="bold">Customer Support Hub — Architecture</text>
+<text x="820.0" y="84" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#94A3B8" text-anchor="middle" font-weight="normal">Microsoft Agent Framework · .NET 8 · Azure</text>
+<rect x="300" y="120" width="470" height="90" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="300" y="120" width="6" height="90" rx="3" fill="#6366F1"/>
+<text x="330" y="154" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="18" fill="#0F172A" text-anchor="start" font-weight="bold">Customer Chat UI</text>
+<text x="330" y="182" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" fill="#475569" text-anchor="start" font-weight="normal">React · Vite · Tailwind · live activity panel (SSE)</text>
+<rect x="870" y="120" width="470" height="90" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="870" y="120" width="6" height="90" rx="3" fill="#FB7185"/>
+<text x="900" y="154" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="18" fill="#0F172A" text-anchor="start" font-weight="bold">Reviewer UI</text>
+<text x="900" y="182" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" fill="#475569" text-anchor="start" font-weight="normal">React · approve / deny pending requests</text>
+<rect x="300" y="270" width="1040" height="96" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="300" y="270" width="6" height="96" rx="3" fill="#0EA5E9"/>
+<text x="330" y="304" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="18" fill="#0F172A" text-anchor="start" font-weight="bold">AgentHandoff.Api  ·  ASP.NET Core</text>
+<text x="330" y="334" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="14" fill="#475569" text-anchor="start" font-weight="normal">SSE  /api/chat/stream   ·   approvals API   ·   Event Grid listener</text>
+<line x1="535" y1="210" x2="535" y2="270" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<line x1="1105" y1="210" x2="1105" y2="270" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="140" y="420" width="1360" height="330" rx="12" fill="#FBFCFE" stroke="#E2E8F0" stroke-width="2"/>
+<text x="165" y="454" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="20" fill="#0F172A" text-anchor="start" font-weight="bold">AgentHandoff.Engine</text>
+<text x="420" y="454" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#94A3B8" text-anchor="start" font-weight="normal">— shared agents, two orchestration modes, middleware pipeline</text>
+<rect x="165" y="476" width="430" height="110" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="185" y="504" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#6366F1" text-anchor="start" font-weight="bold">ORCHESTRATION</text>
+<rect x="185" y="520" width="185" height="48" rx="12" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+<text x="277" y="549" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="bold">Handoff (mesh)</text>
+<rect x="388" y="520" width="185" height="48" rx="12" fill="#FAE8FF" stroke="#F0ABFC" stroke-width="1.5"/>
+<text x="480" y="549" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" fill="#0F172A" text-anchor="middle" font-weight="bold">Magentic (manager)</text>
+<rect x="620" y="476" width="880" height="110" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="640" y="504" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="start" font-weight="bold">AGENTS</text>
+<rect x="640" y="524" width="160" height="40" rx="20.0" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+<circle cx="656" cy="544.0" r="6" fill="#6366F1"/>
+<text x="670" y="549.0" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">triage</text>
+<rect x="808" y="524" width="160" height="40" rx="20.0" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+<circle cx="824" cy="544.0" r="6" fill="#0EA5E9"/>
+<text x="838" y="549.0" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">tech_support</text>
+<rect x="976" y="524" width="160" height="40" rx="20.0" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+<circle cx="992" cy="544.0" r="6" fill="#10B981"/>
+<text x="1006" y="549.0" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">order_shipping</text>
+<rect x="1144" y="524" width="160" height="40" rx="20.0" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+<circle cx="1160" cy="544.0" r="6" fill="#F59E0B"/>
+<text x="1174" y="549.0" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">billing</text>
+<rect x="1312" y="524" width="160" height="40" rx="20.0" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+<circle cx="1328" cy="544.0" r="6" fill="#C026D3"/>
+<text x="1342" y="549.0" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">manager</text>
+<rect x="165" y="606" width="1335" height="118" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="185" y="634" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="start" font-weight="bold">MIDDLEWARE  (runs for every turn / every agent)</text>
+<rect x="185" y="650" width="256" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="185" y="650" width="6" height="56" rx="3" fill="#F59E0B"/>
+<text x="203" y="674" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="start" font-weight="bold">Guardrails</text>
+<text x="203" y="694" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" fill="#475569" text-anchor="start" font-weight="normal">Content Safety · injection · PII</text>
+<rect x="448" y="650" width="256" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="448" y="650" width="6" height="56" rx="3" fill="#FB7185"/>
+<text x="466" y="674" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="start" font-weight="bold">Sentiment</text>
+<text x="466" y="694" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" fill="#475569" text-anchor="start" font-weight="normal">frustration / urgency → human</text>
+<rect x="711" y="650" width="256" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="711" y="650" width="6" height="56" rx="3" fill="#C026D3"/>
+<text x="729" y="674" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="start" font-weight="bold">ApprovalGate</text>
+<text x="729" y="694" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" fill="#475569" text-anchor="start" font-weight="normal">human-in-the-loop on tools</text>
+<rect x="974" y="650" width="256" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="974" y="650" width="6" height="56" rx="3" fill="#10B981"/>
+<text x="992" y="674" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="start" font-weight="bold">Metrics + Budget</text>
+<text x="992" y="694" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" fill="#475569" text-anchor="start" font-weight="normal">tokens · cost · per-turn</text>
+<rect x="1237" y="650" width="256" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="1237" y="650" width="6" height="56" rx="3" fill="#0EA5E9"/>
+<text x="1255" y="674" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#0F172A" text-anchor="start" font-weight="bold">A2A wrapper</text>
+<text x="1255" y="694" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" fill="#475569" text-anchor="start" font-weight="normal">remote-capable Billing</text>
+<line x1="820" y1="366" x2="820" y2="420" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="820.0" y="782" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle" font-weight="normal">Azure &amp; external services</text>
+<rect x="140" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="140" y="804" width="6" height="84" rx="3" fill="#0EA5E9"/>
+<text x="160" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">MCP Server</text>
+<text x="160" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">stdio / HTTP</text>
+<rect x="366.4" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="366.4" y="804" width="6" height="84" rx="3" fill="#0EA5E9"/>
+<text x="386.4" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">Azure AI Search</text>
+<text x="386.4" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">RAG knowledge base</text>
+<rect x="592.8" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="592.8" y="804" width="6" height="84" rx="3" fill="#6366F1"/>
+<text x="612.8" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">Azure OpenAI</text>
+<text x="612.8" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">gpt-4o-mini class</text>
+<rect x="819.1999999999999" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="819.1999999999999" y="804" width="6" height="84" rx="3" fill="#F59E0B"/>
+<text x="839.1999999999999" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">AI Content Safety</text>
+<text x="839.1999999999999" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">4 harm categories</text>
+<rect x="1045.6" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="1045.6" y="804" width="6" height="84" rx="3" fill="#10B981"/>
+<text x="1065.6" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">Cosmos DB</text>
+<text x="1065.6" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">session store</text>
+<rect x="1272.0" y="804" width="228" height="84" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="1272.0" y="804" width="6" height="84" rx="3" fill="#C026D3"/>
+<text x="1292.0" y="838" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="start" font-weight="bold">Event Grid</text>
+<text x="1292.0" y="864" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="start" font-weight="normal">approval broker</text>
+<line x1="254.0" y1="750" x2="254.0" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="480.4" y1="750" x2="480.4" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="706.8" y1="750" x2="706.8" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="933.1999999999999" y1="750" x2="933.1999999999999" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="1159.6" y1="750" x2="1159.6" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="1386.0" y1="750" x2="1386.0" y2="804" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="358.0" y1="846" x2="372.4" y2="846" stroke="#0EA5E9" stroke-width="2" marker-end="url(#arr)"/>
+</svg>

@@ -1,0 +1,15 @@
+PAYSLIP — March 2026
+Employer:        Contoso Israel Ltd. (Reg. 51-234567)
+Employee:        Dana Cohen   ID: 012345678
+Position:        Senior Software Engineer
+Pay period:      2026-03-01 — 2026-03-31
+
+Gross salary:    32,000.00 ILS
+Income tax:      -7,840.00 ILS
+National ins.:   -1,920.00 ILS
+Health tax:        -960.00 ILS
+Pension (emp):   -2,240.00 ILS
+Net pay:         19,040.00 ILS
+
+Bank deposit:    Discount 12-345-6789012
+Pay date:        2026-04-02

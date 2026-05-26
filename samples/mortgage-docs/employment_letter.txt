@@ -1,0 +1,24 @@
+Contoso Israel Ltd.
+HaArba'a St 28, Tel Aviv 6473925
+Tel: +972-3-555-0142
+
+2026-05-10
+
+To whom it may concern,
+
+This is to confirm that Ms. Dana Cohen (ID 012345678) has been employed by
+Contoso Israel Ltd. as a Senior Software Engineer on a permanent, full-time
+contract since 2021-09-01. Her current gross monthly salary is 32,000 ILS,
+paid on the 2nd of each month into Discount account 12-345-6789012.
+
+Ms. Cohen has successfully completed her probation period and is not under
+notice of termination.
+
+For any further verification, please contact HR at hr@contoso-il.example.
+
+Sincerely,
+Avner Levi
+Director of People Operations
+Contoso Israel Ltd.
+
+[Company stamp]

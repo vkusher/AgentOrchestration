@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AgentHandoff.McpServer</RootNamespace>
+    <AssemblyName>AgentHandoff.McpServer</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+	  <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="0.2.0-preview.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
+
+    <!-- Azure AI Search — RAG backend for the knowledge-base tool -->
+    <PackageReference Include="Azure.Search.Documents" Version="11.6.0" />
+
+    <!-- Azure Blob Storage — used by the optional pull-model indexer pipeline
+         (article JSON → blob container → Azure Search indexer → KB index). -->
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.22.2" />
+
+    <!-- Money-transfer extraction: Document Intelligence (OCR for PDFs/images)
+         + Azure OpenAI (JSON-mode structured extraction). -->
+    <PackageReference Include="Azure.AI.DocumentIntelligence" Version="1.0.0" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

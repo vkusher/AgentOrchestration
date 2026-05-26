@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>AgentHandoff.Api</RootNamespace>
+    <AssemblyName>AgentHandoff.Api</AssemblyName>
+    <UserSecretsId>agenthandoff-api-9f1c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AgentHandoff.Engine\AgentHandoff.Engine.csproj" />
+	  
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="0.2.0-preview.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.agents.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.agents.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+	
+  <Target Name="PublishMcpServer" AfterTargets="Publish">
+    <MSBuild Projects="..\AgentHandoff.McpServer\AgentHandoff.McpServer.csproj" Targets="Publish" Properties="Configuration=$(Configuration);TargetFramework=net8.0;PublishDir=$(PublishDir)mcpserver/;SelfContained=false" />
+  </Target>
+    
+</Project>

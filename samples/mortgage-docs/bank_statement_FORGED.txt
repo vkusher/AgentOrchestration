@@ -1,0 +1,13 @@
+BANK DISCOUNT — Account Statement
+Account holder:  Dana Cohen
+Account no.:     12-345-6789012
+Period:          2026-03-01 — 2026-03-31
+
+Opening balance:                    14,310.42 ILS
+2026-03-02  Salary Contoso Israel  +49,040.00 ILS    ← inflated vs. payslip
+2026-03-04  Rent — Y. Cohen        -5,800.00 ILS
+2026-03-25  Transfer to savings    -3,000.00 ILS
+Closing balance:                    54,550.42 ILS
+
+Issued: 2026-04-01   Branch: 345 (Tel Aviv Central)
+Digital signature: INVALID — certificate chain does not verify

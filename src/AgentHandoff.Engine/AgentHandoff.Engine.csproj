@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>AgentHandoff.Engine</RootNamespace>
+    <AssemblyName>AgentHandoff.Engine</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft Agent Framework (preview).
+         API surface used here matches the October 2025 preview:
+            InProcessExecution.StreamAsync, AgentRunUpdateEvent,
+            AgentThread / AgentRunResponse / AgentRunResponseUpdate.
+         Newer (rc2+) builds renamed those to RunStreamingAsync / AgentResponseUpdateEvent /
+         AgentSession / AgentResponse / AgentResponseUpdate — adjust the .cs files accordingly
+         if you bump these versions. -->
+    <PackageReference Include="Azure.AI.ContentSafety" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Agents.AI" Version="1.0.0-preview.251002.1" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.0.0-preview.251002.1" />
+    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.251002.1" />
+
+    <!-- Azure OpenAI provider -->
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+
+    <!-- Azure AI Foundry persistent (hosted) agents — used by the 'foundry' runtime transport. -->
+    <PackageReference Include="Azure.AI.Agents.Persistent" Version="1.0.0" />
+
+    <!-- Azure AI Content Safety — text moderation for input guardrails -->
+    <PackageReference Include="Azure.AI.ContentSafety" Version="1.0.0" />
+
+    <!-- Microsoft.Extensions.AI building blocks (versions must satisfy transitive constraints
+         pulled in by Microsoft.Agents.AI; see https://aka.ms/nu1605 ). -->
+    <PackageReference Include="Microsoft.Extensions.AI" Version="9.9.1" />
+    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.9.0-preview.1.25458.4" />
+
+    <!-- MCP (Model Context Protocol) -->
+    <PackageReference Include="ModelContextProtocol" Version="0.2.0-preview.3" />
+
+    <!-- YAML configuration support -->
+    <PackageReference Include="YamlDotNet" Version="15.1.4" />
+
+    <!-- Cosmos DB session registry (optional backend; selected via SessionRegistry:Provider) -->
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.46.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- Event Grid namespace topics (optional approval transport; pull-delivery, key auth) -->
+    <PackageReference Include="Azure.Messaging.EventGrid.Namespaces" Version="1.0.0" />
+
+    <!-- Hosting (BackgroundService for the EventGrid approval listener) -->
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
+
+    <!-- Logging / Hosting helpers (kept >= the versions Microsoft.Agents.AI requires). -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+  </ItemGroup>
+
+</Project>

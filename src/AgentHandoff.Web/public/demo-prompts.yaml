@@ -1,0 +1,76 @@
+# Demo prompts shown in the "Demo prompts" strip in the UI.
+# Add one entry per prompt. The label is shown on the button; prompt is sent verbatim.
+# Order is preserved.
+prompts:
+  - label: "Branch hours (HE)"
+    prompt: "מה שעות הפעילות של סניף תל אביב מרכז?"
+
+  - label: "Fixed vs variable rate (HE)"
+    prompt: "מה ההבדל בין ריבית קבועה לריבית משתנה?"
+    
+
+  - label: "Balance lookup"
+    prompt: "What's the balance on ACCT-1001?"
+
+  - label: "Refund a wire fee"
+    prompt: "Wire fee for TXN-2026-0042 was charged in error — please refund $45 and confirm."
+
+  - label: "FX rate (HE)"
+    prompt: "כמה זה 100 שקל בדולרים?"
+
+  - label: "Fraud — unknown charge"
+    prompt: "I see a $500 charge on my card from a merchant I don't recognize. What should I do?"
+    
+  - label: "Fraud — lost card"
+    prompt: "My card 4242 was lost"
+
+  - label: "Refund with human in the loop"
+    prompt: "Refund the $79 overdraft fee on TXN-2026-0099"
+
+  - label: "General financial question (HE)"
+    prompt: "כמה עולה העברה לחו״ל"
+
+  - label: "Escalation (HE)"
+    prompt: "אני רוצה לדבר עם בנקאי אנושי, נמאס לי מהבוט הזה!"
+
+  - label: "Azure content safety (HE)"
+    prompt: "בא לי לפוצץ אותכם"
+
+  - label: "Complex query 1 (HE)"
+    prompt: "מה שעות הפעילות של סניף תל אביב מרכז ו מה ההבדל בין ריבית קבועה לריבית משתנה"
+
+  - label: "Complex query 2 (HE)"
+    prompt: "מה שעות הפעילות של סניף תל אביב ומה יתרה של חשבון ACCT-1003"
+
+  - label: "Fraud - unknown charge"
+    prompt: "Someone made a $500 charge on my card I don't recognize"
+
+  - label: "Transfer — explicit (EN)"
+    prompt: "Hi, please transfer 2,500 ILS from my Discount account 12-345-6789012 to my landlord's Discount account 55-220-1234567. Memo: April rent. Thanks."
+
+  - label: "Transfer — no bank (EN)"
+    prompt: "Hello, can you move 750 shekels from account 11-052-9988776 to account 55-220-1234567 today? Reference: utilities."
+
+  - label: "Transfer — other bank (EN)"
+    prompt: "Please send 4,000 NIS from my Discount account 12-345-6789012 to Bank Hapoalim account 12-678-4455661 (beneficiary: Dana Cohen). Memo: contractor invoice 2026-04."
+
+  - label: "Transfer — ambiguous (EN)"
+    prompt: "Hey - send fifteen hundred to Yossi from my main account this evening. You have his details on file from last month."
+
+  - label: "Transfer — no bank (HE)"
+    prompt: "שלום, אנא העבירו 1,800 ש\"ח מחשבון 11-052-9988776 לחשבון 55-220-1234567. מטרת ההעברה: שכר דירה אפריל. תודה."
+
+  - label: "Transfer — Leumi (HE)"
+    prompt: "היי, אשמח שתעבירו 3,200 ש\"ח מחשבון דיסקונט שלי 12-345-6789012 לחשבון בנק לאומי 10-800-7654321 על שם רוני לוי. הערה: החזר הלוואה."
+
+  - label: "Mortgage — full bundle"
+    prompt: "Please validate my mortgage application MTG-2026-0042. Property price 1,650,000 ILS, profession: software engineer (salaried), income band: high, property type: apartment, first-time buyer: no. Attached are my ID, three payslips, bank statement, employment letter, and property appraisal."
+
+  - label: "Mortgage — partial bundle"
+    prompt: "Mortgage application MTG-2026-0099. Loan amount 950,000 ILS, salaried, mid income, apartment. Attached: ID and one payslip only."
+
+  - label: "Mortgage — with tampered docs"
+    prompt: "Mortgage application MTG-2026-0177. 1,800,000 ILS, salaried, high income, apartment, first-time buyer: yes. Attached are my ID front + back, payslips, bank statements, employment letter and appraisal. Please validate."
+
+  - label: "Mortgage — self-employed"
+    prompt: "Please validate mortgage application MTG-2026-0250. 1,200,000 ILS, profession: self_employed, income band: high, property type: house, first-time buyer: no. Attached: ID, tax return, bank statement."

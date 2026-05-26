@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Agent Mesh Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  textarea, input, select { background-color: rgb(15 23 42); }
+  .tag { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+  body { background: #0b1220; color: #e5e7eb; }
+  .card { background: #0f172a; border: 1px solid #1f2937; }
+  .btn { background: #1f2937; border: 1px solid #334155; padding: 6px 10px; border-radius: 6px; }
+  .btn:hover { background: #334155; }
+  .btn-primary { background: #2563eb; border-color: #1d4ed8; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-danger { background: #7f1d1d; border-color: #991b1b; }
+  .btn-danger:hover { background: #991b1b; }
+  .field label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
+  .field input, .field select, .field textarea {
+    width: 100%; border: 1px solid #334155; border-radius: 6px; padding: 6px 8px; font-size: 13px;
+  }
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 999px; font-size: 11px; }
+  .pill-mcp { background: #1e3a8a; }
+  .pill-local { background: #064e3b; }
+  .pill-agent { background: #4c1d95; }
+</style>
+</head>
+<body class="min-h-screen">
+<div id="root"></div>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
+  }
+}
+</script>
+<script type="module">
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { createRoot } from "react-dom/client";
+
+const e = React.createElement;
+const API = ""; // same-origin
+
+function useFetch(url, init) {
+  const [data, setData] = useState(null);
+  const [err, setErr] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const reload = useCallback(() => {
+    setLoading(true);
+    fetch(url, init).then(async r => {
+      if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+      return r.json();
+    }).then(j => { setData(j); setErr(null); }).catch(setErr).finally(() => setLoading(false));
+  }, [url]);
+  useEffect(reload, [reload]);
+  return { data, err, loading, reload };
+}
+
+function uniq(arr) { return Array.from(new Set(arr)); }
+
+function emptyAgent(id) {
+  return {
+    id: id || "new_agent",
+    name: id || "new_agent",
+    displayName: "New Agent",
+    role: "specialist",
+    description: "",
+    instructions: "",
+    toolKeys: [],
+    runtime: { transport: "in_process" }
+  };
+}
+
+function App() {
+  const mesh = useFetch(`${API}/api/admin/mesh`);
+  const cat  = useFetch(`${API}/api/admin/catalog`);
+  const [draft, setDraft] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const [savingMsg, setSavingMsg] = useState(null);
+  const [saveErr, setSaveErr] = useState(null);
+
+  useEffect(() => {
+    if (mesh.data?.mesh) {
+      setDraft(JSON.parse(JSON.stringify(mesh.data.mesh)));
+      if (!selectedId && mesh.data.mesh.agents?.length) {
+        setSelectedId(mesh.data.mesh.agents[0].id);
+      }
+    }
+  }, [mesh.data]);
+
+  if (mesh.loading || cat.loading || !draft) {
+    return e("div", { className: "p-6 text-sm text-slate-300" }, "Loading mesh...");
+  }
+  if (mesh.err) return e("div", { className: "p-6 text-red-400" }, "Load failed: " + mesh.err.message);
+
+  const catalog = cat.data || { tools: [], transports: [], roles: [], middlewares: [] };
+  const agentById = Object.fromEntries(draft.agents.map(a => [a.id, a]));
+  const selected = agentById[selectedId] || draft.agents[0];
+
+  function updateAgent(id, patch) {
+    setDraft(d => ({
+      ...d,
+      agents: d.agents.map(a => a.id === id ? { ...a, ...patch } : a)
+    }));
+  }
+  function updateAgentRuntime(id, patch) {
+    setDraft(d => ({
+      ...d,
+      agents: d.agents.map(a => a.id === id ? { ...a, runtime: { ...(a.runtime || {}), ...patch } } : a)
+    }));
+  }
+  function renameAgent(oldId, newId) {
+    if (!newId || newId === oldId) return;
+    if (draft.agents.some(a => a.id === newId)) { alert("Id already in use."); return; }
+    setDraft(d => ({
+      ...d,
+      entryAgentId: d.entryAgentId === oldId ? newId : d.entryAgentId,
+      managerAgentId: d.managerAgentId === oldId ? newId : d.managerAgentId,
+      fallbackSpecialistId: d.fallbackSpecialistId === oldId ? newId : d.fallbackSpecialistId,
+      escalationAgentId: d.escalationAgentId === oldId ? newId : d.escalationAgentId,
+      agents: d.agents.map(a => a.id === oldId
+        ? { ...a, id: newId, toolKeys: (a.toolKeys || []).map(k => k === `agent.${oldId}` ? `agent.${newId}` : k) }
+        : { ...a, toolKeys: (a.toolKeys || []).map(k => k === `agent.${oldId}` ? `agent.${newId}` : k) }),
+      handoff: {
+        ...(d.handoff || {}),
+        entryAgentId: d.handoff?.entryAgentId === oldId ? newId : d.handoff?.entryAgentId,
+        links: (d.handoff?.links || []).map(l => ({
+          ...l,
+          from: l.from === oldId ? newId : l.from,
+          to:   l.to   === oldId ? newId : l.to,
+        })),
+      },
+      magentic: {
+        ...(d.magentic || {}),
+        managerAgentId: d.magentic?.managerAgentId === oldId ? newId : d.magentic?.managerAgentId,
+        fallbackSpecialistId: d.magentic?.fallbackSpecialistId === oldId ? newId : d.magentic?.fallbackSpecialistId,
+        specialistAgentIds: (d.magentic?.specialistAgentIds || []).map(x => x === oldId ? newId : x)
+      }
+    }));
+    setSelectedId(newId);
+  }
+  function addAgent() {
+    let i = 1;
+    while (draft.agents.some(a => a.id === `new_agent_${i}`)) i++;
+    const id = `new_agent_${i}`;
+    setDraft(d => ({ ...d, agents: [...d.agents, emptyAgent(id)] }));
+    setSelectedId(id);
+  }
+  function deleteAgent(id) {
+    if (!confirm(`Delete agent "${id}"?`)) return;
+    setDraft(d => ({
+      ...d,
+      agents: d.agents.filter(a => a.id !== id).map(a => ({
+        ...a,
+        toolKeys: (a.toolKeys || []).filter(k => k !== `agent.${id}`)
+      })),
+      handoff: {
+        ...(d.handoff || {}),
+        links: (d.handoff?.links || []).filter(l => l.from !== id && l.to !== id)
+      },
+      magentic: {
+        ...(d.magentic || {}),
+        specialistAgentIds: (d.magentic?.specialistAgentIds || []).filter(x => x !== id)
+      }
+    }));
+    setSelectedId(draft.agents.find(a => a.id !== id)?.id || null);
+  }
+
+  async function save() {
+    setSavingMsg("Saving..."); setSaveErr(null);
+    try {
+      const r = await fetch(`${API}/api/admin/mesh`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(draft)
+      });
+      const body = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(body.detail || body.error || `${r.status}`);
+      setSavingMsg(`Saved. Wrote: ${(body.written || []).join(", ")}. Restart API to apply.`);
+    } catch (ex) {
+      setSaveErr(String(ex.message || ex));
+      setSavingMsg(null);
+    }
+  }
+
+  return e("div", { className: "min-h-screen" },
+    e(Header, { paths: mesh.data?.paths, onSave: save, onReload: mesh.reload, savingMsg, saveErr }),
+    e("div", { className: "grid grid-cols-12 gap-4 p-4" },
+      e(AgentList, {
+        agents: draft.agents,
+        selectedId: selected?.id,
+        onSelect: setSelectedId,
+        onAdd: addAgent,
+        onDelete: deleteAgent
+      }),
+      e("div", { className: "col-span-6 space-y-4" },
+        e(AgentEditor, {
+          agent: selected,
+          catalog,
+          onChange: patch => updateAgent(selected.id, patch),
+          onChangeRuntime: patch => updateAgentRuntime(selected.id, patch),
+          onRename: newId => renameAgent(selected.id, newId)
+        }),
+        e(ToolPicker, { agent: selected, catalog, onChange: patch => updateAgent(selected.id, patch) }),
+      ),
+      e("div", { className: "col-span-3 space-y-4" },
+        e(MeshRoots, { draft, setDraft, allIds: draft.agents.map(a => a.id) }),
+        e(HandoffEditor, { draft, setDraft, allIds: draft.agents.map(a => a.id) }),
+        e(MagenticEditor, { draft, setDraft, allIds: draft.agents.map(a => a.id) }),
+        e(MiddlewareList, { middlewares: catalog.middlewares }),
+      )
+    )
+  );
+}
+
+function Header({ paths, onSave, onReload, savingMsg, saveErr }) {
+  return e("header", { className: "px-4 py-3 border-b border-slate-800 flex items-center gap-4" },
+    e("h1", { className: "text-lg font-semibold" }, "Agent Mesh Admin"),
+    e("span", { className: "text-xs text-slate-400 truncate flex-1" },
+      paths?.loaded ? `loaded: ${paths.loaded}` : ""
+    ),
+    savingMsg && e("span", { className: "text-xs text-emerald-400" }, savingMsg),
+    saveErr   && e("span", { className: "text-xs text-red-400" },     saveErr),
+    e("button", { className: "btn", onClick: onReload }, "Reload"),
+    e("button", { className: "btn btn-primary", onClick: onSave }, "Save YAML"),
+  );
+}
+
+function AgentList({ agents, selectedId, onSelect, onAdd, onDelete }) {
+  return e("aside", { className: "col-span-3 card rounded-lg p-3" },
+    e("div", { className: "flex items-center justify-between mb-2" },
+      e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Agents"),
+      e("button", { className: "btn text-xs", onClick: onAdd }, "+ New")
+    ),
+    e("ul", { className: "space-y-1" },
+      agents.map(a => e("li", {
+          key: a.id,
+          className: "flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer "
+            + (a.id === selectedId ? "bg-slate-800" : "hover:bg-slate-800/50"),
+          onClick: () => onSelect(a.id)
+        },
+        e("div", { className: "flex-1 min-w-0" },
+          e("div", { className: "text-sm truncate" }, a.displayName || a.name || a.id),
+          e("div", { className: "text-xs text-slate-500 truncate tag" }, `${a.id} · ${a.role} · ${a.runtime?.transport || "in_process"}`)
+        ),
+        e("button", {
+          className: "text-slate-500 hover:text-red-400 text-xs",
+          onClick: ev => { ev.stopPropagation(); onDelete(a.id); }
+        }, "✕")
+      ))
+    )
+  );
+}
+
+function AgentEditor({ agent, catalog, onChange, onChangeRuntime, onRename }) {
+  if (!agent) return null;
+  const rt = agent.runtime || { transport: "in_process" };
+  const showFoundry  = rt.transport === "foundry";
+  const showAnth     = rt.transport === "anthropic";
+  const showA2A      = rt.transport === "in_process_a2a";
+  return e("section", { className: "card rounded-lg p-4 space-y-3" },
+    e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Agent"),
+    e("div", { className: "grid grid-cols-2 gap-3 field" },
+      e("div", null, e("label", null, "Id"),
+        e("input", { defaultValue: agent.id, onBlur: ev => onRename(ev.target.value.trim()) })),
+      e("div", null, e("label", null, "Name"),
+        e("input", { value: agent.name || "", onChange: ev => onChange({ name: ev.target.value }) })),
+      e("div", null, e("label", null, "Display name"),
+        e("input", { value: agent.displayName || "", onChange: ev => onChange({ displayName: ev.target.value }) })),
+      e("div", null, e("label", null, "Role"),
+        e("select", { value: agent.role || "specialist", onChange: ev => onChange({ role: ev.target.value }) },
+          catalog.roles.map(r => e("option", { key: r, value: r }, r)))),
+    ),
+    e("div", { className: "field" },
+      e("label", null, "Description"),
+      e("input", { value: agent.description || "", onChange: ev => onChange({ description: ev.target.value }) })
+    ),
+    e("div", { className: "field" },
+      e("label", null, "Instructions / system prompt"),
+      e("textarea", {
+        value: agent.instructions || "",
+        onChange: ev => onChange({ instructions: ev.target.value }),
+        rows: 14,
+        className: "font-mono text-xs"
+      })
+    ),
+    e("h3", { className: "text-xs font-semibold uppercase tracking-wide text-slate-400 pt-2" }, "Runtime"),
+    e("div", { className: "grid grid-cols-2 gap-3 field" },
+      e("div", null, e("label", null, "Transport"),
+        e("select", { value: rt.transport || "in_process", onChange: ev => onChangeRuntime({ transport: ev.target.value }) },
+          catalog.transports.map(t => e("option", { key: t.value, value: t.value, title: t.description }, t.value)))),
+      e("div", null, e("label", null, "Emit approval events as"),
+        e("input", { value: rt.emitApprovalEventsAs || "", placeholder: "(default = agent id)",
+          onChange: ev => onChangeRuntime({ emitApprovalEventsAs: ev.target.value || null }) })),
+      showA2A && e("div", null, e("label", null, "A2A remote name"),
+        e("input", { value: rt.a2ARemoteName || "", onChange: ev => onChangeRuntime({ a2ARemoteName: ev.target.value || null }) })),
+      showFoundry && e("div", { className: "col-span-2" }, e("label", null, "Foundry project endpoint"),
+        e("input", { value: rt.foundryProjectEndpoint || "", placeholder: "https://...services.ai.azure.com/api/projects/<project>",
+          onChange: ev => onChangeRuntime({ foundryProjectEndpoint: ev.target.value || null }) })),
+      showFoundry && e("div", { className: "col-span-2" }, e("label", null, "Foundry agent id"),
+        e("input", { value: rt.foundryAgentId || "", placeholder: "asst_...",
+          onChange: ev => onChangeRuntime({ foundryAgentId: ev.target.value || null }) })),
+      showAnth && e("div", { className: "col-span-2" }, e("label", null, "Anthropic model"),
+        e("input", { value: rt.anthropicModel || "", placeholder: "claude-haiku-4-5",
+          onChange: ev => onChangeRuntime({ anthropicModel: ev.target.value || null }) })),
+    )
+  );
+}
+
+function ToolPicker({ agent, catalog, onChange }) {
+  if (!agent) return null;
+  const selected = new Set(agent.toolKeys || []);
+  const grouped = useMemo(() => {
+    const g = { mcp: [], local: [], agent: [] };
+    for (const t of catalog.tools) {
+      // hide self-referential agent tool
+      if (t.kind === "agent" && t.key === `agent.${agent.id}`) continue;
+      g[t.kind]?.push(t);
+    }
+    return g;
+  }, [catalog.tools, agent.id]);
+
+  function toggle(k) {
+    const next = new Set(selected);
+    if (next.has(k)) next.delete(k); else next.add(k);
+    onChange({ toolKeys: Array.from(next) });
+  }
+
+  function Group({ title, items, pillClass }) {
+    if (!items.length) return null;
+    return e("div", null,
+      e("div", { className: "text-xs uppercase tracking-wide text-slate-400 mb-1 mt-2" }, title),
+      e("ul", { className: "space-y-1" },
+        items.map(t => e("li", { key: t.key, className: "flex items-start gap-2" },
+          e("input", { type: "checkbox", className: "mt-1", checked: selected.has(t.key), onChange: () => toggle(t.key) }),
+          e("div", { className: "flex-1" },
+            e("div", { className: "flex items-center gap-2" },
+              e("span", { className: `pill ${pillClass} tag` }, t.key),
+            ),
+            e("div", { className: "text-xs text-slate-400" }, t.description),
+          )
+        ))
+      )
+    );
+  }
+  return e("section", { className: "card rounded-lg p-4" },
+    e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Tools"),
+    e("p", { className: "text-xs text-slate-500 mb-2" }, "Tick a tool to attach it to this agent."),
+    e(Group, { title: "MCP",   items: grouped.mcp,   pillClass: "pill-mcp" }),
+    e(Group, { title: "Local", items: grouped.local, pillClass: "pill-local" }),
+    e(Group, { title: "Agents-as-tools", items: grouped.agent, pillClass: "pill-agent" }),
+  );
+}
+
+function MeshRoots({ draft, setDraft, allIds }) {
+  const f = (label, key) => e("div", { key, className: "field" },
+    e("label", null, label),
+    e("select", { value: draft[key] || "", onChange: ev => setDraft(d => ({ ...d, [key]: ev.target.value })) },
+      e("option", { value: "" }, "(none)"),
+      allIds.map(id => e("option", { key: id, value: id }, id))
+    )
+  );
+  return e("section", { className: "card rounded-lg p-4 space-y-2" },
+    e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Mesh roots"),
+    f("Entry agent", "entryAgentId"),
+    f("Manager agent", "managerAgentId"),
+    f("Fallback specialist", "fallbackSpecialistId"),
+    f("Escalation agent", "escalationAgentId"),
+  );
+}
+
+function HandoffEditor({ draft, setDraft, allIds }) {
+  const links = draft.handoff?.links || [];
+  function update(idx, patch) {
+    setDraft(d => ({
+      ...d,
+      handoff: { ...(d.handoff || {}), links: links.map((l, i) => i === idx ? { ...l, ...patch } : l) }
+    }));
+  }
+  function remove(idx) {
+    setDraft(d => ({ ...d, handoff: { ...(d.handoff || {}), links: links.filter((_, i) => i !== idx) } }));
+  }
+  function add() {
+    setDraft(d => ({
+      ...d,
+      handoff: { ...(d.handoff || {}), links: [...links, { from: allIds[0], to: allIds[1] || allIds[0], bidirectional: false }] }
+    }));
+  }
+  return e("section", { className: "card rounded-lg p-4 space-y-2" },
+    e("div", { className: "flex items-center justify-between" },
+      e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Handoff links"),
+      e("button", { className: "btn text-xs", onClick: add }, "+ Add")
+    ),
+    e("ul", { className: "space-y-1" },
+      links.map((l, idx) => e("li", { key: idx, className: "flex items-center gap-1 text-xs" },
+        e("select", { className: "flex-1 bg-slate-900 border border-slate-700 rounded px-1 py-0.5", value: l.from, onChange: ev => update(idx, { from: ev.target.value }) },
+          allIds.map(id => e("option", { key: id, value: id }, id))),
+        e("span", { className: "text-slate-500" }, l.bidirectional ? "⇄" : "→"),
+        e("select", { className: "flex-1 bg-slate-900 border border-slate-700 rounded px-1 py-0.5", value: l.to, onChange: ev => update(idx, { to: ev.target.value }) },
+          allIds.map(id => e("option", { key: id, value: id }, id))),
+        e("label", { className: "flex items-center gap-1 text-slate-400" },
+          e("input", { type: "checkbox", checked: !!l.bidirectional, onChange: ev => update(idx, { bidirectional: ev.target.checked }) }), "bi"),
+        e("button", { className: "text-slate-500 hover:text-red-400", onClick: () => remove(idx) }, "✕"),
+      ))
+    )
+  );
+}
+
+function MagenticEditor({ draft, setDraft, allIds }) {
+  const m = draft.magentic || {};
+  const set = patch => setDraft(d => ({ ...d, magentic: { ...(d.magentic || {}), ...patch } }));
+  const specialists = new Set(m.specialistAgentIds || []);
+  function toggle(id) {
+    const next = new Set(specialists);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    set({ specialistAgentIds: Array.from(next) });
+  }
+  return e("section", { className: "card rounded-lg p-4 space-y-2" },
+    e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400" }, "Magentic"),
+    e("div", { className: "field" }, e("label", null, "Manager"),
+      e("select", { value: m.managerAgentId || "", onChange: ev => set({ managerAgentId: ev.target.value }) },
+        e("option", { value: "" }, "(inherit)"),
+        allIds.map(id => e("option", { key: id, value: id }, id)))),
+    e("div", { className: "field" }, e("label", null, "Fallback specialist"),
+      e("select", { value: m.fallbackSpecialistId || "", onChange: ev => set({ fallbackSpecialistId: ev.target.value }) },
+        e("option", { value: "" }, "(inherit)"),
+        allIds.map(id => e("option", { key: id, value: id }, id)))),
+    e("div", null,
+      e("div", { className: "text-xs uppercase tracking-wide text-slate-400 mb-1" }, "Specialist agent ids"),
+      e("ul", { className: "space-y-0.5 max-h-48 overflow-auto pr-1" },
+        allIds.map(id => e("li", { key: id, className: "flex items-center gap-2 text-xs" },
+          e("input", { type: "checkbox", checked: specialists.has(id), onChange: () => toggle(id) }),
+          e("span", { className: "tag" }, id),
+        ))
+      )
+    )
+  );
+}
+
+function MiddlewareList({ middlewares }) {
+  return e("section", { className: "card rounded-lg p-4" },
+    e("h2", { className: "text-sm font-semibold uppercase tracking-wide text-slate-400 mb-2" }, "Middlewares"),
+    e("p", { className: "text-xs text-slate-500 mb-2" }, "Wired automatically on every agent — informational only."),
+    e("ul", { className: "space-y-2" },
+      (middlewares || []).map(m => e("li", { key: m.name },
+        e("div", { className: "text-sm" }, m.name),
+        e("div", { className: "text-xs text-slate-400" }, m.description),
+        e("div", { className: "text-xs text-slate-500 tag" }, m.scope),
+      ))
+    )
+  );
+}
+
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+
+.app {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.header h1 { margin: 0; font-size: 22px; }
+.muted { color: #94a3b8; font-size: 13px; }
+
+.controls { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.controls label { font-size: 13px; color: #94a3b8; }
+.controls input[type="checkbox"] { accent-color: #38bdf8; }
+
+.empty {
+  border: 1px dashed #334155;
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.tool {
+  font-weight: 600;
+  font-size: 15px;
+  color: #f1f5f9;
+}
+.session {
+  font-size: 12px;
+  color: #94a3b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.args {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #cbd5e1;
+  overflow-x: auto;
+  margin: 8px 0;
+  white-space: pre;
+}
+
+.meta {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.actions { display: flex; gap: 8px; align-items: center; }
+.actions input {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+.btn {
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+}
+.btn-approve { background: #16a34a; }
+.btn-approve:hover { background: #15803d; }
+.btn-deny { background: #dc2626; }
+.btn-deny:hover { background: #b91c1c; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  border: 1px solid #334155;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+.toast.error { border-color: #dc2626; color: #fecaca; }

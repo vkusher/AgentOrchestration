@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AgentHandoff Voice Gateway — Phase 1 Echo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    button { font-size: 1rem; padding: 0.6rem 1rem; margin-right: 0.5rem; cursor: pointer; }
+    #log { background: #111; color: #eee; padding: 1rem; height: 300px; overflow: auto; font-family: monospace; font-size: 0.85rem; white-space: pre-wrap; }
+    .row { margin: 1rem 0; }
+    .pill { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; background: #eee; font-size: 0.8rem; }
+    .pill.live { background: #2ecc71; color: white; }
+    .pill.speaking { background: #e67e22; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Voice Gateway — Phase 1 (Echo)</h1>
+  <p>Click <b>Start</b>, allow the microphone, and speak. The realtime model will echo back. Server VAD detects end-of-utterance automatically.</p>
+
+  <div class="row">
+    <button id="start">Start</button>
+    <button id="stop" disabled>Stop</button>
+    <span id="status" class="pill">idle</span>
+  </div>
+
+  <div id="log"></div>
+
+  <script type="module">
+    const $ = (id) => document.getElementById(id);
+    const log = (msg) => { $("log").textContent += msg + "\n"; $("log").scrollTop = $("log").scrollHeight; };
+    const setStatus = (txt, cls = "") => { const el = $("status"); el.textContent = txt; el.className = "pill " + cls; };
+
+    const SAMPLE_RATE = 24000;
+    let ws = null, audioCtx = null, micNode = null, micStream = null;
+    let playbackTime = 0;
+
+    async function start() {
+      $("start").disabled = true; $("stop").disabled = false;
+
+      const proto = location.protocol === "https:" ? "wss" : "ws";
+      ws = new WebSocket(`${proto}://${location.host}/ws/voice`);
+      ws.binaryType = "arraybuffer";
+
+      ws.onopen    = () => { log("[ws] open"); setStatus("connected", "live"); };
+      ws.onclose   = (e) => { log(`[ws] closed ${e.code} ${e.reason}`); setStatus("closed"); cleanup(); };
+      ws.onerror   = (e) => log(`[ws] error ${e?.message ?? ""}`);
+      ws.onmessage = onWsMessage;
+
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: SAMPLE_RATE });
+      playbackTime = audioCtx.currentTime;
+
+      // Inline AudioWorklet that downsamples to mono Int16 PCM and posts batches.
+      const workletSrc = `
+        class PcmCapture extends AudioWorkletProcessor {
+          constructor() { super(); this._buf = []; this._bufLen = 0; this._target = 2400; }
+          process(inputs) {
+            const input = inputs[0]; if (!input || !input[0]) return true;
+            const channel = input[0];
+            const i16 = new Int16Array(channel.length);
+            for (let i = 0; i < channel.length; i++) {
+              let s = Math.max(-1, Math.min(1, channel[i]));
+              i16[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+            }
+            this._buf.push(i16); this._bufLen += i16.length;
+            if (this._bufLen >= this._target) {
+              const out = new Int16Array(this._bufLen);
+              let off = 0; for (const c of this._buf) { out.set(c, off); off += c.length; }
+              this.port.postMessage(out.buffer, [out.buffer]);
+              this._buf = []; this._bufLen = 0;
+            }
+            return true;
+          }
+        }
+        registerProcessor("pcm-capture", PcmCapture);
+      `;
+      const blob = new Blob([workletSrc], { type: "application/javascript" });
+      const url = URL.createObjectURL(blob);
+      await audioCtx.audioWorklet.addModule(url);
+
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: { sampleRate: SAMPLE_RATE, channelCount: 1, echoCancellation: true, noiseSuppression: true } });
+      const source = audioCtx.createMediaStreamSource(micStream);
+      micNode = new AudioWorkletNode(audioCtx, "pcm-capture");
+      micNode.port.onmessage = (e) => {
+        if (ws?.readyState === WebSocket.OPEN) ws.send(e.data);
+      };
+      source.connect(micNode);
+      log("[mic] capturing 24 kHz mono PCM16");
+    }
+
+    function onWsMessage(e) {
+      if (typeof e.data === "string") {
+        try {
+          const evt = JSON.parse(e.data);
+          if (evt.type === "input_audio_buffer.speech_started") setStatus("user speaking", "speaking");
+          if (evt.type === "input_audio_buffer.speech_stopped") setStatus("thinking", "live");
+          if (evt.type === "response.audio_transcript.delta")   { /* live caption: evt.delta */ }
+          if (evt.type === "response.audio_transcript.done")    log("[bot] " + (evt.transcript ?? ""));
+          if (evt.type === "conversation.item.input_audio_transcription.completed") log("[user] " + (evt.transcript ?? ""));
+          if (evt.type === "response.done") setStatus("connected", "live");
+          if (evt.type === "status") log("[status] " + evt.status);
+          if (evt.type === "error") log("[error] " + JSON.stringify(evt.error ?? evt));
+        } catch { log("[ws-text] " + e.data); }
+        return;
+      }
+      // Binary frame = PCM16 24 kHz audio to play.
+      const i16 = new Int16Array(e.data);
+      const f32 = new Float32Array(i16.length);
+      for (let i = 0; i < i16.length; i++) f32[i] = i16[i] / 0x8000;
+      const buf = audioCtx.createBuffer(1, f32.length, SAMPLE_RATE);
+      buf.getChannelData(0).set(f32);
+      const src = audioCtx.createBufferSource();
+      src.buffer = buf; src.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+      if (playbackTime < now) playbackTime = now;
+      src.start(playbackTime);
+      playbackTime += buf.duration;
+    }
+
+    function stop() { cleanup(); }
+
+    function cleanup() {
+      try { ws?.close(); } catch {}
+      try { micNode?.disconnect(); } catch {}
+      try { micStream?.getTracks().forEach(t => t.stop()); } catch {}
+      try { audioCtx?.close(); } catch {}
+      ws = null; micNode = null; micStream = null; audioCtx = null;
+      $("start").disabled = false; $("stop").disabled = true;
+      setStatus("idle");
+    }
+
+    $("start").addEventListener("click", () => start().catch(err => { log("[start] " + err.message); cleanup(); }));
+    $("stop").addEventListener("click", stop);
+  </script>
+</body>
+</html>

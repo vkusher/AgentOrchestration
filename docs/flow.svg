@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1180" viewBox="0 0 1500 1180">
+<rect width="1500" height="1180" fill="#FFFFFF"/>
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#475569"/></marker>
+<marker id="arrL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#94A3B8"/></marker>
+</defs>
+<text x="750.0" y="50" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="28" fill="#0F172A" text-anchor="middle" font-weight="bold">Customer Support Hub — Request Flow (one turn)</text>
+<rect x="340.0" y="100" width="360" height="64" rx="12" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+<rect x="340.0" y="100" width="6" height="64" rx="3" fill="#6366F1"/>
+<text x="520" y="126" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">User message</text>
+<text x="520" y="147" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">in any language (EN / HE)</text>
+<line x1="520" y1="164" x2="520" y2="204" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="340.0" y="204" width="360" height="64" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="340.0" y="204" width="6" height="64" rx="3" fill="#0EA5E9"/>
+<text x="520" y="230" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">API opens SSE stream</text>
+<text x="520" y="251" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">/api/chat/stream</text>
+<line x1="520" y1="268" x2="520" y2="308" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="340.0" y="308" width="360" height="64" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="520" y="345.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Sentiment gate — frustrated / urgent?</text>
+<rect x="840.0" y="308" width="360" height="64" rx="12" fill="#FFF1F2" stroke="#FB7185" stroke-width="2"/>
+<rect x="840.0" y="308" width="6" height="64" rx="3" fill="#FB7185"/>
+<text x="1020" y="334" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Escalate</text>
+<text x="1020" y="355" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">→ Human supervisor queue</text>
+<line x1="700.0" y1="340.0" x2="840.0" y2="340.0" stroke="#FB7185" stroke-width="2" marker-end="url(#arr)"/>
+<text x="770.0" y="332.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#FB7185" text-anchor="middle" font-weight="bold">yes</text>
+<line x1="520" y1="372" x2="520" y2="412" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="534" y="396.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#10B981" text-anchor="start" font-weight="bold">no</text>
+<rect x="340.0" y="412" width="360" height="64" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="520" y="449.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Budget gate — session exhausted?</text>
+<rect x="840.0" y="412" width="360" height="64" rx="12" fill="#FFF1F2" stroke="#FB7185" stroke-width="2"/>
+<rect x="840.0" y="412" width="6" height="64" rx="3" fill="#FB7185"/>
+<text x="1020" y="438" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Block</text>
+<text x="1020" y="459" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">budget limit reached</text>
+<line x1="700.0" y1="444.0" x2="840.0" y2="444.0" stroke="#FB7185" stroke-width="2" marker-end="url(#arr)"/>
+<text x="770.0" y="436.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#FB7185" text-anchor="middle" font-weight="bold">yes</text>
+<line x1="520" y1="476" x2="520" y2="516" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="534" y="500.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#10B981" text-anchor="start" font-weight="bold">no</text>
+<rect x="340.0" y="516" width="360" height="64" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="520" y="553.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Input guardrails — Content Safety · injection · PII</text>
+<rect x="840.0" y="516" width="360" height="64" rx="12" fill="#FFF1F2" stroke="#FB7185" stroke-width="2"/>
+<rect x="840.0" y="516" width="6" height="64" rx="3" fill="#F59E0B"/>
+<text x="1020" y="542" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Refuse / redact</text>
+<text x="1020" y="563" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">unsafe input blocked</text>
+<line x1="700.0" y1="548.0" x2="840.0" y2="548.0" stroke="#FB7185" stroke-width="2" marker-end="url(#arr)"/>
+<text x="770.0" y="540.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#FB7185" text-anchor="middle" font-weight="bold">hit</text>
+<line x1="520" y1="580" x2="520" y2="620" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="534" y="604.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#10B981" text-anchor="start" font-weight="bold">pass</text>
+<rect x="340.0" y="620" width="360" height="94" rx="12" fill="#FAFAFF" stroke="#E2E8F0" stroke-width="2"/>
+<text x="520" y="644" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">Orchestrate</text>
+<rect x="356.0" y="656" width="150" height="40" rx="12" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+<text x="431.0" y="682" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" fill="#0F172A" text-anchor="middle" font-weight="bold">Handoff</text>
+<rect x="534.0" y="656" width="150" height="40" rx="12" fill="#FAE8FF" stroke="#F0ABFC" stroke-width="1.5"/>
+<text x="609.0" y="682" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" fill="#0F172A" text-anchor="middle" font-weight="bold">Magentic</text>
+<line x1="520" y1="714" x2="520" y2="754" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="340.0" y="754" width="360" height="64" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="340.0" y="754" width="6" height="64" rx="3" fill="#10B981"/>
+<text x="520" y="780" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">Specialist runs · calls tools</text>
+<text x="520" y="801" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">MCP / RAG · local · A2A</text>
+<line x1="520" y1="818" x2="520" y2="858" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="340.0" y="858" width="360" height="64" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="520" y="895.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">Refund ≥ $50 ?</text>
+<rect x="840.0" y="858" width="360" height="64" rx="12" fill="#FFF1F2" stroke="#FB7185" stroke-width="2"/>
+<rect x="840.0" y="858" width="6" height="64" rx="3" fill="#C026D3"/>
+<text x="1020" y="884" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="bold">HITL approval</text>
+<text x="1020" y="905" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">pause → approve / deny</text>
+<line x1="700.0" y1="890.0" x2="840.0" y2="890.0" stroke="#FB7185" stroke-width="2" marker-end="url(#arr)"/>
+<text x="770.0" y="882.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#FB7185" text-anchor="middle" font-weight="bold">yes</text>
+<line x1="840.0" y1="930" x2="528" y2="962" stroke="#C026D3" stroke-width="1.5" marker-end="url(#arrL)"/>
+<line x1="520" y1="922" x2="520" y2="962" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="534" y="946.0" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" fill="#10B981" text-anchor="start" font-weight="bold">no</text>
+<rect x="340.0" y="962" width="360" height="64" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<rect x="340.0" y="962" width="6" height="64" rx="3" fill="#F59E0B"/>
+<text x="520" y="988" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">Output guardrail · metrics · budget</text>
+<text x="520" y="1009" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">tokens · cost · snapshot</text>
+<line x1="520" y1="1026" x2="520" y2="1066" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="340.0" y="1066" width="360" height="64" rx="12" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
+<rect x="340.0" y="1066" width="6" height="64" rx="3" fill="#10B981"/>
+<text x="520" y="1092" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="middle" font-weight="bold">Stream response to UI</text>
+<text x="520" y="1113" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="12" fill="#475569" text-anchor="middle" font-weight="normal">agent badge · timeline · cost</text>
+<rect x="1040" y="1000" width="340" height="150" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="1060" y="1032" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="16" fill="#0F172A" text-anchor="start" font-weight="bold">Legend</text>
+<rect x="1060" y="1048" width="20" height="20" rx="4" fill="#F8FAFC" stroke="#6366F1" stroke-width="2"/>
+<text x="1092" y="1064" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#475569" text-anchor="start" font-weight="normal">Step</text>
+<rect x="1060" y="1078" width="20" height="20" rx="4" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+<text x="1092" y="1094" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#475569" text-anchor="start" font-weight="normal">Decision gate</text>
+<rect x="1060" y="1108" width="20" height="20" rx="4" fill="#FFF1F2" stroke="#FB7185" stroke-width="2"/>
+<text x="1092" y="1124" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" fill="#475569" text-anchor="start" font-weight="normal">Terminal / human</text>
+</svg>

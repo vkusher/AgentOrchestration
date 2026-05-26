@@ -1,0 +1,17 @@
+ISRAEL TAX AUTHORITY — Individual Annual Return (Form 1301)
+Tax year:        2025
+Taxpayer:        Dana Cohen
+ID:              012345678
+Filing status:   Salaried, single
+
+Income from employment (Section 2/9):    384,000 ILS
+Other income:                                 0 ILS
+Allowable deductions:                    26,880 ILS (pension contributions)
+Taxable income:                         357,120 ILS
+
+Total tax assessed:                      94,080 ILS
+Tax withheld at source:                  94,080 ILS
+Balance due / (refund):                       0 ILS
+
+Filed:           2026-04-22
+Acknowledgement: ITA-2026-0422-7711-DCK

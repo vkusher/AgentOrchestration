@@ -1,0 +1,10 @@
+STATE OF ISRAEL — MINISTRY OF INTERIOR
+Identity Card — back side
+
+Address:        Rothschild Blvd 12, Tel Aviv
+                [field appears edited — pixel anomalies along baseline]
+Issued at:      Tel Aviv branch
+Document #:     A48273619
+                [trailing checksum digit overwritten — does not match front]
+
+NOTE: Microprint border missing on lower-right corner.

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "AgentHandoff.McpServerWeb": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56158;http://localhost:56159"
+    }
+  }
+}
